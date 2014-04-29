@@ -64,7 +64,7 @@ public class Board {
 		board[0][4] = new King(-1);
 		//Black pawns
 		for(int i = 0; i < NUM_TILES; i++){
-			//board[1][i] = new Pawn(-1);
+			board[1][i] = new Pawn(-1);
 		}
 		//White rooks
 		board[7][0] = new Rook(1);
@@ -81,7 +81,7 @@ public class Board {
 		board[7][4] = new King(1);
 		//White pawns
 		for(int i = 0; i < NUM_TILES; i++){
-			//board[6][i] = new Pawn(1);
+			board[6][i] = new Pawn(1);
 		}
 
 		inMate = updatePossible();
