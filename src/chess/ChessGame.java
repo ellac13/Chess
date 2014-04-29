@@ -9,6 +9,10 @@ public class ChessGame {
 	public static void main ( String[] args) {
 		JFrame f = new JFrame("Title of frame here");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//setUp
+		Board playBoard = new Board();
+		
 		Userinterf ui = new Userinterf ();
 		f.add(ui);
 		// 486x509 window
@@ -19,4 +23,3 @@ public class ChessGame {
 		f.setVisible(true);
 	}
 }
-	

@@ -11,8 +11,8 @@ public class King extends Piece{
 	}
 
 	@Override
-	public HashSet<Integer[]> findNext(Board board,int currentC, int currentR) {
-		HashSet<Integer[]> nextPos= new HashSet<Integer[]>();
+	public void findNext(Board board,int currentC, int currentR) {
+		possibleMoves= new HashSet<Integer[]>();
 		//List of possible directions
 		int [][] directions={{1,0},{1,1},{0,1},{-1,0},{-1,-1},{0,-1},{1,-1},{-1,1}};
 
@@ -23,20 +23,23 @@ public class King extends Piece{
 			checkPosition[1]=currentR+direction[1];
 
 			//check that position is in range
-			if (inBounds(checkPosition[0], checkPosition[0])){
+			if (inBounds(checkPosition[0], checkPosition[1])){
 
 				if (board.occupied(checkPosition[0], checkPosition[1])!=this.returnColor()){
 					//TODO:this is where i can implement some sort of in-mate function
-					nextPos.add(checkPosition);
+					possibleMoves.add(checkPosition);
 				} else if (board.occupied(checkPosition[0], checkPosition[1])==0){
 					//TODO:this is where i can implement some sort of in-mate function
-					nextPos.add(checkPosition);
+					possibleMoves.add(checkPosition);
 				}
 			}
 		}
 
-		return nextPos;
 	}
+	public int picturePosition(){
+		return 0;
+	}
+	
 
 }
 

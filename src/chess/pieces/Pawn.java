@@ -11,33 +11,35 @@ public class Pawn extends Piece {
 	}
 
 	@Override
-	public HashSet<Integer[]> findNext(Board board,int currentC, int currentR) {
-		HashSet<Integer[]> nextPos= new HashSet<Integer[]>();
+	public void findNext(Board board,int currentC, int currentR) {
+		possibleMoves= new HashSet<Integer[]>();
 		//check that position is in range
 
 		Integer[] checkPosition={currentC, currentR+this.returnColor()};
 		if (inBound(checkPosition[1])){
 			if (board.occupied(checkPosition[0], checkPosition[1])==0){
-				nextPos.add(checkPosition);
+				possibleMoves.add(checkPosition);
 			}
 			Integer [] temp = {1,-1};
 			for (Integer t : temp){
 				checkPosition[0]=currentR+t;
 				if (inBound(checkPosition[0])){
 					if (board.occupied(checkPosition[0], checkPosition[1])!=this.returnColor()){
-						nextPos.add(checkPosition);
+						possibleMoves.add(checkPosition);
 					}
 				}
 			}
 		}
 		if (!this.hasMoved()){
 			if (board.occupied(checkPosition[0], checkPosition[1])==0){
-				nextPos.add(checkPosition);
+				possibleMoves.add(checkPosition);
 			}
 		}
 
-
-		return nextPos;
 	}
+	public int picturePosition(){
+		return 320;
+	}
+	
 
 }
