@@ -195,13 +195,9 @@ public class Board {
 		}
 		return 0;
 	}
+	
+	public int isMate(){
+		return inMate;
+	}
 
-	/*
-
-	 to be implemented later.
-
-	 public int isMate(){
-	 	return inMate;
-	 }
-	 */
 }     

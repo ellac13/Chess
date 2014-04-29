@@ -3,8 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
+//import javax.swing.border.Border;
+//import javax.swing.border.LineBorder;
 
 import chess.pieces.Piece;
 @SuppressWarnings("serial")
@@ -72,7 +72,6 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		if(!( xTemp==marked_x && yTemp == marked_y)){
 			if (playBoard.occupied(marked_x, marked_y)!=0){
 				System.out.println(""+playBoard.getPiece(marked_x, marked_y).moveIsAlowed(xTemp, yTemp));
-				System.out.println("hej");
 				if (playBoard.getPiece(marked_x, marked_y).moveIsAlowed(xTemp, yTemp)){
 					playBoard.movePiece(marked_x, marked_y, xTemp, yTemp);
 				}

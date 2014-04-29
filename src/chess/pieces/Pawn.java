@@ -15,7 +15,10 @@ public class Pawn extends Piece {
 		possibleMoves= new HashSet<Integer[]>();
 		//check that position is in range
 
-		Integer[] checkPosition={currentC, currentR+this.returnColor()};
+		Integer[] checkPosition = {0,0};
+		checkPosition[0]=currentC;
+		checkPosition[1]=currentR-this.returnColor();
+		
 		if (inBound(checkPosition[1])){
 			if (board.occupied(checkPosition[0], checkPosition[1])==0){
 				possibleMoves.add(checkPosition);
@@ -24,7 +27,7 @@ public class Pawn extends Piece {
 			for (Integer t : temp){
 				checkPosition[0]=currentR+t;
 				if (inBound(checkPosition[0])){
-					if (board.occupied(checkPosition[0], checkPosition[1])!=this.returnColor()){
+					if (!(board.occupied(checkPosition[0], checkPosition[1])==this.returnColor())){
 						possibleMoves.add(checkPosition);
 					}
 				}

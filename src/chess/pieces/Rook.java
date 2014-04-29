@@ -34,12 +34,16 @@ public class Rook extends Piece {
 		if (inBounds(position[0], position[1])){
 			if (board.occupied(position[0], position[1])==0){
 				possibleMoves.add(position);
+				System.out.println("hej");
 				position[0]+=direction[0];
 				position[1]+=direction[1];
 				step(position, direction, board);
+				return;
 			}else if (!(board.occupied(position[0], position[1])==this.returnColor())){
 				possibleMoves.add(position);
+				return;
 			}
+			return;
 		}
 
 	}
