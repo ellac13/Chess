@@ -5,7 +5,7 @@ import java.util.HashSet;
 import chess.Board;
 
 public class Pawn extends Piece {
-	
+
 	public Pawn(int color){
 		super(color);
 	}
@@ -15,31 +15,33 @@ public class Pawn extends Piece {
 		possibleMoves= new HashSet<Integer[]>();
 		//check that position is in range
 
-		Integer[] checkPosition={currentC, currentR+this.returnColor()};
-		if (inBound(checkPosition[1])){
+		Integer[] checkPosition = {0,0};
+		checkPosition[0]=currentC;
+		checkPosition[1]=currentR-this.returnColor();
+		if (inBounds(checkPosition[0], checkPosition[1])){
 			if (board.occupied(checkPosition[0], checkPosition[1])==0){
 				possibleMoves.add(checkPosition);
 			}
-			Integer [] temp = {1,-1};
-			for (Integer t : temp){
-				checkPosition[0]=currentR+t;
-				if (inBound(checkPosition[0])){
-					if (board.occupied(checkPosition[0], checkPosition[1])!=this.returnColor()){
-						possibleMoves.add(checkPosition);
+			int[ ] sides = {1,-1};
+			for (int side : sides ){
+				if (inBounds(checkPosition[0]+side, checkPosition[1])){
+					if ((board.occupied(checkPosition[0]+side, checkPosition[1])==(-this.returnColor()))){
+						Integer[] temp= {checkPosition[0]+side, checkPosition[1]};
+						possibleMoves.add(temp);
 					}
 				}
 			}
 		}
-		if (!this.hasMoved()){
-			if (board.occupied(checkPosition[0], checkPosition[1])==0){
-				possibleMoves.add(checkPosition);
-			}
-		}
+		//if (!this.hasMoved()){
+		//	if (board.occupied(checkPosition[0], checkPosition[1])==0){
+		//		possibleMoves.add(checkPosition);
+		//	}
+		//}
 
 	}
 	public int picturePosition(){
 		return 320;
 	}
-	
+
 
 }

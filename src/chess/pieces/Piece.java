@@ -79,10 +79,8 @@ public abstract class Piece {
 	}
 	public boolean moveIsAlowed(int c, int r){
 		if (possibleMoves!=null){
-		System.out.println(possibleMoves.size());
 		for (Iterator<Integer[]> iterator = possibleMoves.iterator(); iterator.hasNext();) {
 			Integer[] move = iterator.next();
-			System.out.println("hej");
 			if (move[0] == c && move[1] == r ){
 				return true;
 			}

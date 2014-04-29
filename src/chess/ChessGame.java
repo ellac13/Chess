@@ -11,7 +11,7 @@ public class ChessGame {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//setUp
-		Board playBoard = new Board();
+		//Board playBoard = new Board();
 		
 		Userinterf ui = new Userinterf ();
 		f.add(ui);

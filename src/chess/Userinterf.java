@@ -3,8 +3,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
 import chess.pieces.Piece;
 @SuppressWarnings("serial")
@@ -41,10 +39,8 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 
 
 		//testline
-		Image kingBlack = new ImageIcon("pictures/king_black.png").getImage();
-		g.drawImage(kingBlack, king_x*60, king_y*60, this);
-
-
+		//Image kingBlack = new ImageIcon("pictures/king_black.png").getImage();
+		//g.drawImage(kingBlack, king_x*60, king_y*60, this);
 
 		drawPieces(g);
 
@@ -71,8 +67,6 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		int yTemp=e.getY()/60;
 		if(!( xTemp==marked_x && yTemp == marked_y)){
 			if (playBoard.occupied(marked_x, marked_y)!=0){
-				System.out.println(""+playBoard.getPiece(marked_x, marked_y).moveIsAlowed(xTemp, yTemp));
-				System.out.println("hej");
 				if (playBoard.getPiece(marked_x, marked_y).moveIsAlowed(xTemp, yTemp)){
 					playBoard.movePiece(marked_x, marked_y, xTemp, yTemp);
 				}
@@ -117,7 +111,6 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 					int color=33;
 					color=color+(color*temp.returnColor());
 					g.drawImage(chessPieces, c*60, r*60, c*60+60, r*60+60, tempInt, color, tempInt+60, 60+color, this);
-					//g.drawImage(kingBlack, r*60, c*60, this);
 				}
 			}
 		}
