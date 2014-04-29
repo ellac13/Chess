@@ -1,4 +1,5 @@
 package chess.pieces;
+
 import java.util.HashSet;
 
 import chess.Board;
@@ -6,6 +7,7 @@ import chess.Board;
 public abstract class Piece {
 	protected int color;
 	protected boolean hasMoved;
+	protected HashSet<Integer[]> possibleMoves;
 	/**
 	 * Constructor for 
 	 * 
@@ -23,7 +25,7 @@ public abstract class Piece {
 	 * @return A list of possible moves
 	 */
 	//TODO: Return format? maybe string? needs to show if a  move is creating mate.
-	public abstract HashSet<Integer[]> findNext(Board board, int currentC, int currentR);
+	public abstract void findNext(Board board, int currentC, int currentR);
 	
 	/**
 	 * Get color of the piece. Color is returned as an integer.
@@ -63,5 +65,17 @@ public abstract class Piece {
 	protected boolean inBounds(int c, int r){
 		return (inBound(c) && inBound(r));
 	}
+	
+	/**
+	 * Returns the possible moves for this piece
+	 */
+	public HashSet<Integer[]> getMoves(){
+		return possibleMoves;
+	}
+	
+	public int picturePossition(){
+		return 0;
+	}
+	
 	 
 }

@@ -11,7 +11,7 @@ public class Pawn extends Piece {
 	}
 
 	@Override
-	public HashSet<Integer[]> findNext(Board board,int currentC, int currentR) {
+	public void findNext(Board board,int currentC, int currentR) {
 		HashSet<Integer[]> nextPos= new HashSet<Integer[]>();
 		//check that position is in range
 
@@ -37,7 +37,11 @@ public class Pawn extends Piece {
 		}
 
 
-		return nextPos;
+		possibleMoves = nextPos;
 	}
+	public int picturePossition(){
+		return 320;
+	}
+	
 
 }

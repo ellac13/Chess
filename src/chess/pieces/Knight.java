@@ -11,7 +11,7 @@ public class Knight extends Piece {
 	}
 
 	@Override
-	public HashSet<Integer[]> findNext(Board board,int currentC, int currentR) {
+	public void findNext(Board board,int currentC, int currentR) {
 		HashSet<Integer[]> nextPos= new HashSet<Integer[]>();
 		//List of possible directions
 		int [][] directions={{2,1},{2,-1},{-2,1},{-2,-1},{1,2},{1,-2},{-1,2},{-1,-2}};
@@ -34,7 +34,11 @@ public class Knight extends Piece {
 			}
 		}
 
-		return nextPos;
+		possibleMoves = nextPos;
 	}
+	public int picturePossition(){
+		return 195;
+	}
+	
 
 }
