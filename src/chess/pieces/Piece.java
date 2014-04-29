@@ -1,6 +1,7 @@
 package chess.pieces;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import chess.Board;
 
@@ -55,7 +56,7 @@ public abstract class Piece {
 	 */
 	protected boolean inBound(int rc){
 		//TODO Change 4 to 8?
-		return ((rc>=0)&&(rc<4));
+		return ((rc>=0)&&(rc<8));
 	}
 	
 	/**
@@ -73,9 +74,23 @@ public abstract class Piece {
 		return possibleMoves;
 	}
 	
-	public int picturePossition(){
+	public int picturePosition(){
 		return 0;
 	}
+	public boolean moveIsAlowed(int c, int r){
+		if (possibleMoves!=null){
+		System.out.println(possibleMoves.size());
+		for (Iterator<Integer[]> iterator = possibleMoves.iterator(); iterator.hasNext();) {
+			Integer[] move = iterator.next();
+			System.out.println("hej");
+			if (move[0] == c && move[1] == r ){
+				return true;
+			}
+		}
+		}
+		return false;
+	}
+	
 	
 	 
 }
