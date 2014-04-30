@@ -34,7 +34,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 
 		setUp(g);
 
-		Image marked = new ImageIcon("pictures/transpBlue50.png").getImage();
+		Image marked = new ImageIcon("pictures/transpBlue75.png").getImage();
 		g.drawImage(marked, marked_x*60, marked_y*60, 60, 60, this);
 
 
@@ -91,7 +91,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	public void mouseEntered(MouseEvent e){}
 
 	public void setUp(Graphics g){
-		g.setColor(Color.BLACK);
+		g.setColor(Color.gray);
 		for( int i = 0; i < 8; i++){
 			for( int j = 0; j < 8; j++){
 				if((i+j)%2 == 1){
