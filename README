@@ -3,3 +3,9 @@ TODO:
 mate function
 parameter check for marking
 documentation.
+Put all image imports in method and perform try and catch, and give proper error message
+
+
+förslag på schackmattsfix:
+
+ Lägg till boolean threateningKing i pieces. I varje läge där 

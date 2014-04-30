@@ -1,6 +1,8 @@
 package chess;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import javax.swing.*;
 
@@ -12,14 +14,15 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	Board playBoard;
 	int king_x = 2;
 	int king_y = 2;
+	boolean mark;
 	int marked_x = 2;
 	int marked_y = 2;
 	Graphics g;
 	Image chessPieces = new ImageIcon("pictures/chessPieces.png").getImage();
-	
+
 	int playerTurn = 1;
 
-	
+
 	public Userinterf(){
 		this.playBoard = new Board();
 		playBoard.addPieces();
@@ -35,9 +38,23 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		this.g=g;
 
 		setUp(g);
-
 		Image marked = new ImageIcon("pictures/transpBlue75.png").getImage();
-		g.drawImage(marked, marked_x*60, marked_y*60, 60, 60, this);
+		Image markedRed = new ImageIcon("pictures/transpRed75.png").getImage();
+		Image markedOrange = new ImageIcon("pictures/transpOrange50.png").getImage();
+		if (mark){
+			if (playBoard.occupied(marked_x,marked_y)!=playerTurn){
+				g.drawImage(markedRed, marked_x*60, marked_y*60, 60, 60, this);
+			} else {
+			g.drawImage(marked, marked_x*60, marked_y*60, 60, 60, this);
+			}
+		}
+		if (playBoard.occupied(marked_x,marked_y)==playerTurn){
+			HashSet<Integer[]> possible = playBoard.getPiece(marked_x, marked_y).getMoves();
+			for (Iterator<Integer[]> i = possible.iterator(); i.hasNext(); ){
+				Integer[] pos = i.next();
+				g.drawImage(markedOrange, pos[0]*60, pos[1]*60, 60, 60, this);
+			}
+		}
 
 
 		//testline
@@ -46,19 +63,9 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 
 		drawPieces(g);
 
-		g.drawImage(chessPieces, 60, 60, 120, 120, 60, 120, 120, 120, this);
-		//TODO Remove
-		//Border border = new LineBorder(Color.RED);
-		//this.setBorder(border);
-
 	}
 	//@Override 
 	public void mouseMoved(MouseEvent e){
-		/*
-		x=e.getX();
-		y=e.getY();
-		repaint();
-		 */
 	}
 	@Override 
 	public void mousePressed(MouseEvent e){
@@ -67,18 +74,22 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	public void mouseReleased(MouseEvent e){
 		int xTemp=e.getX()/60;
 		int yTemp=e.getY()/60;
-		if(!( xTemp==marked_x && yTemp == marked_y)){
+		if (!( xTemp==marked_x && yTemp == marked_y)){
+			mark=!mark;
+			if(mark && (xTemp<8 && yTemp<8)){
 			if (playBoard.occupied(marked_x, marked_y) == playerTurn){
 				if (playBoard.getPiece(marked_x, marked_y).moveIsAlowed(xTemp, yTemp)){
 					playBoard.movePiece(marked_x, marked_y, xTemp, yTemp);
 					playerTurn = playerTurn * -1;
 					playBoard.getPiece(xTemp, yTemp).move();
+					mark=!mark;
 				}
 			}
 			marked_x=xTemp;
 			marked_y=yTemp;
-
+			}
 			repaint();
+			
 		}
 
 	}

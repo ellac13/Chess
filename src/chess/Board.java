@@ -195,6 +195,9 @@ public class Board {
 
 				if ( p!=null ){
 					p.findNext(this, c, r);
+					if (p.kingThreat()){
+						return p.returnColor();
+					}
 				}
 			}
 		}
