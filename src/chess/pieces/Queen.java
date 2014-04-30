@@ -26,24 +26,6 @@ public class Queen extends Piece {
 
 	}
 
-	/*
-	 * Recursive method to make steps in direction. Possition shold be first possition to check.
-	 */
-
-	private void step(Integer[] position, int[] direction, Board board){
-		if (inBounds(position[0], position[1])){
-			if (board.occupied(position[0], position[1])==0){
-				possibleMoves.add(position);
-				Integer[] nexPos= {position[0]+direction[0], position[1]+direction[1]};
-				step(nexPos, direction, board);
-			}else if (!(board.occupied(position[0], position[1])==this.returnColor())){
-				possibleMoves.add(position);
-			}
-		}
-
-	}
-
-
 	public int picturePosition(){
 		return 65;
 	}
