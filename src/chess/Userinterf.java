@@ -16,6 +16,8 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	int marked_y = 2;
 	Graphics g;
 	Image chessPieces = new ImageIcon("pictures/chessPieces.png").getImage();
+	
+	int playerTurn = 1;
 
 	
 	public Userinterf(){
@@ -66,9 +68,11 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		int xTemp=e.getX()/60;
 		int yTemp=e.getY()/60;
 		if(!( xTemp==marked_x && yTemp == marked_y)){
-			if (playBoard.occupied(marked_x, marked_y)!=0){
+			if (playBoard.occupied(marked_x, marked_y) == playerTurn){
 				if (playBoard.getPiece(marked_x, marked_y).moveIsAlowed(xTemp, yTemp)){
 					playBoard.movePiece(marked_x, marked_y, xTemp, yTemp);
+					playerTurn = playerTurn * -1;
+					playBoard.getPiece(xTemp, yTemp).move();
 				}
 			}
 			marked_x=xTemp;
