@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 /**
  * Board is the representation of the current state of a game of chess.
- * @author felixengstrom
+ * @author felix engstrom
  *
  */
 
@@ -196,13 +196,15 @@ public class Board {
 				if ( p!=null ){
 					p.findNext(this, c, r);
 					if (p.kingThreat()){
-						return p.returnColor();
+						System.out.println("schack!");
 					}
 				}
 			}
 		}
 		return 0;
 	}
+	
+	
 	
 	public int isMate(){
 		return inMate;

@@ -15,6 +15,7 @@ public class King extends Piece{
 	@Override
 	public void findNext(Board board,int currentC, int currentR) {
 		possibleMoves= new HashSet<Integer[]>();
+		threateningKing=false;
 		//List of possible directions
 		int [][] directions={{1,0},{1,1},{0,1},{-1,0},{-1,-1},{0,-1},{1,-1},{-1,1}};
 

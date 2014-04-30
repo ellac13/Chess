@@ -8,4 +8,5 @@ Put all image imports in method and perform try and catch, and give proper error
 
 förslag på schackmattsfix:
 
- Lägg till boolean threateningKing i pieces. I varje läge där 
+ Lägg till boolean threateningKing i pieces. I varje läge där en pjäs har ett drag som tar en annan pjäs 
+ kolla om det är en kung och sätt isåfall till true.( iplementerat för alla pjäser som använder step)

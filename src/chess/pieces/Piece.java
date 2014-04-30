@@ -10,9 +10,16 @@ public abstract class Piece {
 	
 	protected int color;
 	protected boolean hasMoved;
+	
+	// for easier mate finding.
 	protected boolean isKing;
 	protected boolean threateningKing;
+	
+	
 	protected HashSet<Integer[]> possibleMoves;
+	
+	
+	
 	/**
 	 * Constructor for 
 	 * 
@@ -108,7 +115,7 @@ public abstract class Piece {
 
 	/**
 	 * Returns true if piece is king.
-	 * @return
+	 * @return  <code>true</code> Piece is a king. <code>false</code> if it is not.
 	 */
 
 	public boolean king(){
@@ -116,8 +123,8 @@ public abstract class Piece {
 	}
 	
 	/**
-	 * Returns true if piece is king.
-	 * @return
+	 * Returns true if piece is threatening a king.
+	 * @return <code>true</code> if one of pieces possible moves is taking a king. <code>false</code> if it is not.
 	 */
 
 	public boolean kingThreat(){
@@ -129,7 +136,6 @@ public abstract class Piece {
 	 * To be used by all pieces with multiple steps type of movement. Help method.
 	 */
 	protected void step(Integer[] position, int[] direction, Board board){
-		threateningKing=false;
 		if (inBounds(position[0], position[1])){
 			if (board.occupied(position[0], position[1])==0){
 				possibleMoves.add(position);
@@ -139,6 +145,7 @@ public abstract class Piece {
 				possibleMoves.add(position);
 				if  (board.getPiece(position[0], position[1]).king()){
 					threateningKing=true;
+					System.out.println("piece > step : hej");
 				}
 			}
 
