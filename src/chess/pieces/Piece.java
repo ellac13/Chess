@@ -40,7 +40,7 @@ public abstract class Piece {
 	 * Change pieces hasMoved status to <code>true</code> regardless of previous state.
 	 */
 	public void move(){
-		hasMoved=true;
+		this.hasMoved=true;
 	}
 	/**
 	 * Return pieces current hasMoved state, indicating if the piece is in its original position or has been moved.
