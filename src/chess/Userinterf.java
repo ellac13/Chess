@@ -29,6 +29,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	public Userinterf(){
 		this.playBoard = new Board();
 		playBoard.addPieces();
+			playBoard.isCheckMate(1);
 	}
 
 	@Override 
@@ -72,14 +73,22 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			if(mark && (xTemp<8 && yTemp<8)){
 				if (playBoard.occupied(marked_x, marked_y) == playerTurn){
 					if (playBoard.getPiece(marked_x, marked_y).moveIsAlowed(xTemp, yTemp)){
-						playBoard.movePiece(marked_x, marked_y, xTemp, yTemp);
+						Piece temp = playBoard.movePiece(marked_x, marked_y, xTemp, yTemp);
+						if (playBoard.isMate(playerTurn)){
+							playBoard.movePiece( xTemp, yTemp, marked_x, marked_y);
+							playBoard.putPiece(temp, xTemp, yTemp);
+						} else {
 						playerTurn = playerTurn * -1;
 						playBoard.getPiece(xTemp, yTemp).move();
 						mark=!mark;
+						}
 					}
 				}
 				marked_x=xTemp;
 				marked_y=yTemp;
+			}
+			if (playBoard.isCheckMate(playerTurn)){
+				System.out.println("you won"+  (-playerTurn));
 			}
 			repaint();
 

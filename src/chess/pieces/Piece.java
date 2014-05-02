@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import chess.Board;
 
-public abstract class Piece {
+public abstract class Piece implements Cloneable {
 	
 	
 	protected int color;
@@ -66,7 +66,6 @@ public abstract class Piece {
 	 * 
 	 */
 	protected boolean inBound(int rc){
-		//TODO Change 4 to 8?
 		return ((rc>=0)&&(rc<8));
 	}
 
@@ -150,8 +149,24 @@ public abstract class Piece {
 			}
 
 		}
-
 	}
+	
+	
+	
+	/**
+	 * 
+	 */
+	//TODO: write comment
+	public Object clone(){
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+
+		}
+		return null;
+	}
+
 
 
 
