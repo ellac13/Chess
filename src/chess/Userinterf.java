@@ -29,7 +29,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	public Userinterf(){
 		this.playBoard = new Board();
 		playBoard.addPieces();
-			playBoard.isCheckMate(1);
+		playBoard.isCheckMate(1);
 	}
 
 	@Override 
@@ -44,8 +44,8 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		setUp(g);
 		if (mark){
 			drawMarked(g);
-			}
-		
+		}
+
 		if (playBoard.occupied(marked_x,marked_y)==playerTurn){
 			drawPossible(g);
 		}
@@ -78,17 +78,19 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 							playBoard.movePiece( xTemp, yTemp, marked_x, marked_y);
 							playBoard.putPiece(temp, xTemp, yTemp);
 						} else {
-						playerTurn = playerTurn * -1;
-						playBoard.getPiece(xTemp, yTemp).move();
-						mark=!mark;
+							playerTurn = playerTurn * -1;
+							playBoard.getPiece(xTemp, yTemp).move();
+							mark=!mark;
 						}
 					}
 				}
 				marked_x=xTemp;
 				marked_y=yTemp;
 			}
-			if (playBoard.isCheckMate(playerTurn)){
-				System.out.println("you won"+  (-playerTurn));
+			if (playBoard.isMate(playerTurn)){ 
+				if (playBoard.isCheckMate(playerTurn)){
+					System.out.println("you won"+  (-playerTurn));
+				}
 			}
 			repaint();
 
@@ -140,7 +142,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			g.drawImage(markedOrange, pos[0]*60, pos[1]*60, 60, 60, this);
 		}
 	}
-	
+
 	private void drawMarked(Graphics g){
 		if (playBoard.occupied(marked_x,marked_y)!=playerTurn){
 			g.drawImage(markedRed, marked_x*60, marked_y*60, 60, 60, this);

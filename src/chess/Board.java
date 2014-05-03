@@ -1,8 +1,6 @@
 package chess;
 
 import chess.pieces.*;
-
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -251,6 +249,7 @@ public class Board implements Cloneable {
 							Integer [] m = move.next();
 							Piece tempP = temp.movePiece(c ,r , m[0],  m[1]);
 							if (temp.isMate(color)){
+								//TODO revert move?
 								temp.movePiece(m[0],  m[1], c ,r);
 								temp.putPiece(tempP, m[0],  m[1]);
 							}else {
@@ -275,6 +274,7 @@ public class Board implements Cloneable {
 	/**
 	 * 
 	 */
+	@Override 
 	public Board clone(){
 		Board temp = new Board();
 		for ( int r = 0; r<8; r++){
