@@ -18,10 +18,10 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	int marked_x = 2;
 	int marked_y = 2;
 	Graphics g;
-	Image chessPieces = new ImageIcon("pictures/chessPieces.png").getImage();
-	Image marked = new ImageIcon("pictures/transpBlue75.png").getImage();
-	Image markedRed = new ImageIcon("pictures/transpRed75.png").getImage();
-	Image markedOrange = new ImageIcon("pictures/transpOrange50.png").getImage();
+	Image chessPieces;
+	Image marked;
+	Image markedRed ;
+	Image markedOrange;
 
 	int playerTurn = 1;
 
@@ -30,6 +30,14 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		this.playBoard = new Board();
 		playBoard.addPieces();
 		playBoard.isCheckMate(1);
+		 importPictures();
+	}
+	
+	public Userinterf(Board board, int playerColor){
+		this.playBoard = board;
+		playBoard.addPieces();
+		playBoard.isCheckMate(1);
+		 importPictures();
 	}
 
 	@Override 
@@ -42,6 +50,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		this.g=g;
 
 		setUp(g);
+		
 		if (mark){
 			drawMarked(g);
 		}
@@ -49,11 +58,6 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		if (playBoard.occupied(marked_x,marked_y)==playerTurn){
 			drawPossible(g);
 		}
-
-
-		//testline
-		//Image kingBlack = new ImageIcon("pictures/king_black.png").getImage();
-		//g.drawImage(kingBlack, king_x*60, king_y*60, this);
 
 		drawPieces(g);
 
@@ -148,6 +152,17 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			g.drawImage(markedRed, marked_x*60, marked_y*60, 60, 60, this);
 		} else {
 			g.drawImage(marked, marked_x*60, marked_y*60, 60, 60, this);
+		}
+	}
+	
+	private void importPictures(){
+		try{
+		chessPieces = new ImageIcon("pictures/chessPieces.png").getImage();
+		marked = new ImageIcon("pictures/transpBlue75.png").getImage();
+		markedRed = new ImageIcon("pictures/transpRed75.png").getImage();
+		markedOrange = new ImageIcon("pictures/transpOrange50.png").getImage();
+		} catch (Exception e){
+			System.err.println("Problem occured loading game pictures.");
 		}
 	}
 }
