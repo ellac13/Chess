@@ -23,7 +23,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	Image markedRed ;
 	Image markedOrange;
 
-	int playerTurn = 1;
+	int playerColor;
 
 
 	public Userinterf(){
@@ -31,6 +31,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		playBoard.addPieces();
 		playBoard.isCheckMate(1);
 		 importPictures();
+		 playerColor = 0;
 	}
 	
 	public Userinterf(Board board, int playerColor){
@@ -55,7 +56,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			drawMarked(g);
 		}
 
-		if (playBoard.occupied(marked_x,marked_y)==playerTurn){
+		if (playBoard.occupied(marked_x,marked_y)==playBoard.GetPlayerTurn()){
 			drawPossible(g);
 		}
 
@@ -72,6 +73,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	public void mouseReleased(MouseEvent e){
 		int xTemp=e.getX()/60;
 		int yTemp=e.getY()/60;
+		int playerTurn = playBoard.GetPlayerTurn();
 		if (!( xTemp==marked_x && yTemp == marked_y)){
 			mark=!mark;
 			if(mark && (xTemp<8 && yTemp<8)){
@@ -82,7 +84,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 							playBoard.movePiece( xTemp, yTemp, marked_x, marked_y);
 							playBoard.putPiece(temp, xTemp, yTemp);
 						} else {
-							playerTurn = playerTurn * -1;
+							playBoard.nextPlayer(); ;
 							playBoard.getPiece(xTemp, yTemp).move();
 							mark=!mark;
 						}
@@ -148,7 +150,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	}
 
 	private void drawMarked(Graphics g){
-		if (playBoard.occupied(marked_x,marked_y)!=playerTurn){
+		if (playBoard.occupied(marked_x,marked_y)!=playBoard.GetPlayerTurn()){
 			g.drawImage(markedRed, marked_x*60, marked_y*60, 60, 60, this);
 		} else {
 			g.drawImage(marked, marked_x*60, marked_y*60, 60, 60, this);

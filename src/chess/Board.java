@@ -17,6 +17,7 @@ public class Board implements Cloneable {
 	private Piece[][] board;
 	private int inMate = 0;
 	private HashSet<Piece> taken;
+	private int playerTurn;
 
 	/*
 	Imagined board. board[x_coord][y_coord]
@@ -40,6 +41,7 @@ public class Board implements Cloneable {
 	public Board(){
 		this.board = new Piece[NUM_TILES][NUM_TILES];
 		this.taken=new HashSet<Piece>();
+		this.playerTurn = 1;
 
 	}
 
@@ -287,6 +289,23 @@ public class Board implements Cloneable {
 		}
 
 		return temp;
+	}
+	
+	/**
+	 * Changes turn to the other player. 1 is white players turn and -1 is black players turn.
+	 */
+	
+	public void nextPlayer(){
+		playerTurn*=-1;
+	}
+	
+	/**
+	 * Gets an int number representing the player whos turn it is.
+	 * @return 1 if it is white players turn, -1 if it is black players turn.
+	 */
+	
+	public int GetPlayerTurn(){
+		return playerTurn;
 	}
 
 
