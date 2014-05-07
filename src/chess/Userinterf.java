@@ -6,10 +6,7 @@ import java.util.Iterator;
 
 import javax.swing.*;
 
-import chess.pieces.Pawn;
-import chess.pieces.Piece;
-import chess.pieces.Queen;
-import chess.pieces.King;
+import chess.pieces.*;
 @SuppressWarnings("serial")
 public class Userinterf extends JPanel implements MouseListener, MouseMotionListener {
 
@@ -77,8 +74,10 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		g.drawRoundRect(20, 520, 120, 40, 2, 2);
 
 		// prints necessary info.
-		g.setColor(Color.BLACK);
-		g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+		int rgb = 85;
+		Color semiDarkGray = new Color(rgb, rgb, rgb);
+		g.setColor(semiDarkGray);
+		g.setFont(new Font("Arial", Font.BOLD, 20));
 		String[] pt= {"White", "", "Black"} ;
 		if (winner==0){
 			g.drawString(pt[1-playBoard.GetPlayerTurn()]+" players turn." , 20 , 510 );
@@ -226,7 +225,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 				} else {
 					//check if pawn has reached last square on board, if so offer pawnPromotion.
 					if (( r==7 || r == 0) && (playBoard.getPiece(c, r) instanceof Pawn)) {
-						swapPiece( c, r );
+						swapPawn( c, r );
 					}
 					playBoard.nextPlayer(); ;
 					playBoard.getPiece(c, r).move();
@@ -278,16 +277,76 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		repaint();
 
 	}
-
-	//TODO: Finish swap method.
+	
 	/**
 	 * Gives the player options of pieces to swap their pawn for.
 	 */
-	private void swapPiece(int x, int y){
+	private void swapPawn(int x, int y){
 		Piece p = playBoard.getPiece(x, y);
+		//TODO Remove
+		//openChooserWindow(p.returnColor());
+		Piece chosenPiece = pieceChooser(p.returnColor());
 		playBoard.remove(x, y);
-		playBoard.putPiece(new Queen(p.returnColor()), x, y);
+		playBoard.putPiece(chosenPiece, x, y);
 		playBoard.getPiece(x, y).move();
+	}
+	
+	/**
+	 * Opens a dialog window which allows the user to choose a piece which they want returned.
+	 * If no option is chosen, which should never happen, null is returned. 
+	 * @param pieceColor The color of the returned piece, 1 = white, -1 = black.
+	 * @return The chosen piece
+	 */
+	private Piece pieceChooser(int pieceColor) {
+		//Custom button text
+		Object[] options = {"Queen",
+		                    "Bishop",
+		                    "Knight",
+		                    "Rook"};
+		//Section below returns an int (0, 1, 2, 3) depending on chosen option.
+		int n = JOptionPane.showOptionDialog(this,
+		    "Please choose what kind of piece you wish to turn your pawn into",
+		    "A pawn got promoted!",
+		    JOptionPane.YES_NO_CANCEL_OPTION,
+		    JOptionPane.QUESTION_MESSAGE,
+		    null,
+		    options,
+		    options[0]);
+		
+		//Creates a piece corresponding to the chosen option.
+		Piece chosenPiece;
+		switch(n){
+			case 0 : chosenPiece = new Queen(pieceColor);
+					break;
+			case 1 : chosenPiece = new Bishop(pieceColor);
+					break;
+			case 2 : chosenPiece = new Knight(pieceColor);
+					break;
+			case 3 : chosenPiece = new Rook(pieceColor);
+					break;
+			default : chosenPiece = null;
+					break;
+		}
+		return chosenPiece;
+	}
+	
+	//TODO Consider removing as it is not used.
+	/**
+	 * Creates a pop-up containing the four pieces allowed to chose from when promoting a pawn.
+	 * @param pieceColor Color of the pieces to be displayed, 1 = white, -1 = black.
+	 */
+	private void openChooserWindow(int pieceColor){
+		JFrame f = new JFrame("Choose a piece");
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		PieceChooser pc = new PieceChooser(pieceColor);
+		f.add(pc);
+		// 246x88 window
+		f.setSize ( 246 ,88);
+		f.setResizable(false);
+		Image icon = new ImageIcon("pictures/king_black.png").getImage();
+		f.setIconImage(icon);
+		f.setVisible(true);
 	}
 }
 
