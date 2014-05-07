@@ -16,7 +16,7 @@ public class ChessGame {
 		Userinterf ui = new Userinterf ();
 		f.add(ui);
 		// 486x509 window
-		f.setSize(486,509);
+		f.setSize ( 480 ,600);
 		f.setResizable(false);
 		Image icon = new ImageIcon("pictures/king_black.png").getImage();
 		f.setIconImage(icon);
