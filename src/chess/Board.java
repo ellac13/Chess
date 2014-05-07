@@ -2,20 +2,22 @@ package chess;
 
 import chess.pieces.*;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * Board is the representation of the current state of a game of chess.
- * @author felixengstrom
+ * @author felix engstrom
  *
  */
 
-public class Board {
+public class Board implements Cloneable {
 
 
-	private static final int NUM_TILES = 8;
-	private static Piece[][] board;
-	private static int inMate = 0;
-	private static HashSet<Piece> taken;
+	private final int NUM_TILES = 8;
+	private Piece[][] board;
+	private int inMate = 0;
+	private HashSet<Piece> taken;
+	private int playerTurn;
 
 	/*
 	Imagined board. board[x_coord][y_coord]
@@ -37,9 +39,10 @@ public class Board {
 	 * in an initial setup using the addPieces method.
 	 */
 	public Board(){
-		board = new Piece[NUM_TILES][NUM_TILES];
-		taken=new HashSet<Piece>();
-		addPieces();
+		this.board = new Piece[NUM_TILES][NUM_TILES];
+		this.taken=new HashSet<Piece>();
+		this.playerTurn = 1;
+
 	}
 
 	/**
@@ -48,7 +51,7 @@ public class Board {
 	 * white pieces on the two bottom rows(6-7).
 	 * @param board The board to add the pieces to
 	 */
-	
+
 	public void addPieces(){
 		//Black rooks
 		board[0][0] = new Rook(-1);
@@ -88,8 +91,8 @@ public class Board {
 		inMate = updatePossible();
 	}
 
-	
-	
+
+
 	/**
 	 * Return an <code> int </code> indicating wither square at row r and column c is occupied.
 	 * 0 indicates empty square, 1 indicates occupied by white piece and -1 indicates occupied by black piece.
@@ -105,9 +108,9 @@ public class Board {
 		}
 		return board[r][c].returnColor();
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Removes Piece from from square at position row r and column c. Returns the piece removed, and null if square is empty.
 	 * @param c Column to return from
@@ -122,10 +125,10 @@ public class Board {
 		inMate = updatePossible();
 		return p;
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Puts piece on square at position row r and column c and returns . If Square is occupied, return -1 and do nothing.
 	 * @param piece
@@ -144,8 +147,8 @@ public class Board {
 		}
 		return -1;
 	}
-	
-	
+
+
 	/**
 	 * Moves piece on square at position row r and column c to square at position row toC and column toR . If Square is occupied, 
 	 * piece is removed. If (r,c) is empty, nothing happens.
@@ -153,18 +156,22 @@ public class Board {
 	 * @param r Row to get piece from.
 	 * @param toC Column to put piece on.
 	 * @param tor Row to put piece on.
+	 * @return taken piece if one is taken, else returns null
 	 */
-	public void movePiece(int c, int r, int toC, int toR){
+	public Piece movePiece(int c, int r, int toC, int toR){
 		//TODO Check bounds
-		if(board[r][c] != null){
-			Piece temp = board[r][c];
-			board[r][c]=null;
+		if (board[r][c]!=null){
+			Piece temp = board[toR][toC];
 			if ( board[toR][toC] != null){
 				taken.add(board[toR][toC]);
 			}
-			board[toR][toC] = temp;
+			board[toR][toC] = board[r][c] ;
+			board[r][c]=null;
 			inMate = updatePossible();
+			return temp;
 		}
+		return null;
+
 	}
 
 
@@ -185,24 +192,121 @@ public class Board {
 
 	/**
 	 * Goes trough active pieces and updates their possible moves and positions. Also finds out if in mate.
-	 * @return 1 if black in mate, -1 if white in mate and 0 no mate.
+	 * @return 
 	 * 
 	 */
 	public int updatePossible(){
 		for ( int r = 0; r<8; r++){
 			for ( int c = 0; c<8; c++){
 				Piece p = board[r][c];
-
 				if ( p!=null ){
 					p.findNext(this, c, r);
+
 				}
 			}
 		}
 		return 0;
 	}
-	
-	public int isMate(){
-		return inMate;
+
+	/**
+	 * Finds out if king of chosen color i threatened.
+	 * 
+	 * @param color 1 to find out if white king is threatened
+	 * @return true if king of 
+	 */
+	public boolean isMate(int color){
+		for ( int r = 0; r<8; r++){
+			for ( int c = 0; c<8; c++){
+				Piece p = board[r][c];
+				if ( p!=null ){
+					if ( p.returnColor()!=color && p.kingThreat()){
+						System.out.println("board : isMate");
+						return true;
+
+					}
+
+				}
+			}
+		}
+		return false;
 	}
+
+
+	/**
+	 * Finds out if king of chosen color i threatened.
+	 * 
+	 * @param color 1 to find out if white king is threatened
+	 * @return 
+	 * @throws CloneNotSupportedException 
+	 */
+	public boolean isCheckMate(int color){
+		Board temp = this.clone();
+		for ( int r = 0; r<8; r++){
+			for ( int c = 0; c<8; c++){
+				if (board[r][c] != null){
+					if ( board[r][c].returnColor() == color ){
+						Piece p = temp.getPiece(c, r);
+						HashSet<Integer[]> moves = p.getMoves(); 
+						for (Iterator<Integer[]> move = moves.iterator(); move.hasNext();){
+							Integer [] m = move.next();
+							Piece tempP = temp.movePiece(c ,r , m[0],  m[1]);
+							if (temp.isMate(color)){
+								//TODO revert move?
+								temp.movePiece(m[0],  m[1], c ,r);
+								temp.putPiece(tempP, m[0],  m[1]);
+							}else {
+								return false;
+							}
+
+
+
+						}
+					}
+				}
+
+			}
+		}
+
+		return true;
+	}
+
+
+
+	//TODO: write comment.
+	/**
+	 * 
+	 */
+	@Override 
+	public Board clone(){
+		Board temp = new Board();
+		for ( int r = 0; r<8; r++){
+			for ( int c = 0; c<8; c++){
+				if (board[r][c] != null){
+					Piece p = (Piece) board[r][c].clone();
+					temp.putPiece(p, c, r);
+				}
+			}
+		}
+
+		return temp;
+	}
+	
+	/**
+	 * Changes turn to the other player. 1 is white players turn and -1 is black players turn.
+	 */
+	
+	public void nextPlayer(){
+		playerTurn*=-1;
+	}
+	
+	/**
+	 * Gets an int number representing the player whos turn it is.
+	 * @return 1 if it is white players turn, -1 if it is black players turn.
+	 */
+	
+	public int GetPlayerTurn(){
+		return playerTurn;
+	}
+
 
 }     

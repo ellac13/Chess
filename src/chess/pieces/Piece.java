@@ -5,10 +5,21 @@ import java.util.Iterator;
 
 import chess.Board;
 
-public abstract class Piece {
+public abstract class Piece implements Cloneable {
+	
+	
 	protected int color;
 	protected boolean hasMoved;
+	
+	// for easier mate finding.
+	protected boolean isKing;
+	protected boolean threateningKing;
+	
+	
 	protected HashSet<Integer[]> possibleMoves;
+	
+	
+	
 	/**
 	 * Constructor for 
 	 * 
@@ -27,7 +38,7 @@ public abstract class Piece {
 	 */
 	//TODO: Return format? maybe string? needs to show if a  move is creating mate.
 	public abstract void findNext(Board board, int currentC, int currentR);
-	
+
 	/**
 	 * Get color of the piece. Color is returned as an integer.
 	 * 
@@ -49,16 +60,15 @@ public abstract class Piece {
 	public boolean hasMoved(){
 		return this.hasMoved;
 	}
-	
+
 	/**
 	 * Checks to see that parameters is in range of field.
 	 * 
 	 */
 	protected boolean inBound(int rc){
-		//TODO Change 4 to 8?
 		return ((rc>=0)&&(rc<8));
 	}
-	
+
 	/**
 	 * Checks to see that parameters is in range of field.
 	 * 
@@ -66,15 +76,15 @@ public abstract class Piece {
 	protected boolean inBounds(int c, int r){
 		return (inBound(c) && inBound(r));
 	}
-	
+
 	/**
 	 * Returns the possible moves for this piece
 	 */
 	public HashSet<Integer[]> getMoves(){
 		return possibleMoves;
 	}
-	
-	
+
+
 	/**
 	 * Returns a number to be used for finding piece picture.
 	 * @return int x position of pieces picture in chessPieces 
@@ -82,8 +92,8 @@ public abstract class Piece {
 	public int picturePosition(){
 		return 0;
 	}
-	
-	
+
+
 	/**
 	 * Looks to see if move (c,r) is allowed for piece.
 	 * @param c
@@ -92,17 +102,35 @@ public abstract class Piece {
 	 */
 	public boolean moveIsAlowed(int c, int r){
 		if (possibleMoves!=null){
-		for (Iterator<Integer[]> iterator = possibleMoves.iterator(); iterator.hasNext();) {
-			Integer[] move = iterator.next();
-			if (move[0] == c && move[1] == r ){
-				return true;
+			for (Iterator<Integer[]> iterator = possibleMoves.iterator(); iterator.hasNext();) {
+				Integer[] move = iterator.next();
+				if (move[0] == c && move[1] == r ){
+					return true;
+				}
 			}
-		}
 		}
 		return false;
 	}
+
+	/**
+	 * Returns true if piece is king.
+	 * @return  <code>true</code> Piece is a king. <code>false</code> if it is not.
+	 */
+
+	public boolean king(){
+		return isKing;
+	}
 	
-	
+	/**
+	 * Returns true if piece is threatening a king.
+	 * @return <code>true</code> if one of pieces possible moves is taking a king. <code>false</code> if it is not.
+	 */
+
+	public boolean kingThreat(){
+		return threateningKing;
+	}
+
+
 	/*
 	 * To be used by all pieces with multiple steps type of movement. Help method.
 	 */
@@ -114,11 +142,32 @@ public abstract class Piece {
 				step(nexPos, direction, board);
 			}else if (!(board.occupied(position[0], position[1])==this.returnColor())){
 				possibleMoves.add(position);
+				if  (board.getPiece(position[0], position[1]).king()){
+					threateningKing=true;
+					System.out.println("piece > step : hej");
+				}
 			}
-		}
 
+		}
 	}
 	
 	
-	 
+	
+	/**
+	 * 
+	 */
+	//TODO: write comment
+	public Object clone(){
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+
+		}
+		return null;
+	}
+
+
+
+
 }

@@ -3,3 +3,13 @@ TODO:
 mate function
 parameter check for marking
 documentation.
+Put all image imports in method and perform try and catch, and give proper error message
+
+
+förslag på schackmattsfix:
+
+ Lägg till boolean threateningKing i pieces. I varje läge där en pjäs har ett drag som tar en annan pjäs 
+ kolla om det är en kung och sätt isåfall till true.( iplementerat för alla pjäser som använder step)
+ 
+ 
+ Gör så att pieces in bounds hämtar gränser från board.
