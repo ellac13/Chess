@@ -93,6 +93,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		
 		String[] pt= {"White", "", "Black"} ;
 		g.setColor(semiDarkGray);
+	
 		if (winner==0){
 			g.drawString(pt[1-playBoard.GetPlayerTurn()]+" players turn." , 20 , 510 );
 		} else {
@@ -188,6 +189,12 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			HashSet<Integer[]> castle = k.getCastlingMoves();
 			for (Iterator<Integer[]> i = castle.iterator(); i.hasNext(); ){
 				Integer[] pos = i.next();
+				if (pos[0]==0){
+					g.drawImage(markedOrange, 2*60, pos[1]*60, 60, 60, this);
+				}else if(pos[0]==7){
+					g.drawImage(markedOrange, 6*60, pos[1]*60, 60, 60, this);
+				}
+				
 				g.drawImage(markedOrange, pos[0]*60, pos[1]*60, 60, 60, this);
 			}
 
@@ -255,20 +262,20 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 					if (k.castlingAlowed(c, r)){
 						int d=0;
 						if (c==0){
-							d=1;
-						} else {
 							d=-1;
+						} else {
+							d=1;
 						}
-						playBoard.movePiece(marked_x, marked_y, c+1*d, r);
-						playBoard.movePiece(c, r, c+2*d, r);
+						playBoard.movePiece(marked_x, marked_y, marked_x+2*d, r);
+						playBoard.movePiece(c, r, marked_x+1*d, r);
 
 						if (playBoard.isMate(playerTurn)){
-							playBoard.movePiece(c+1*d, r, marked_x, marked_y);
-							playBoard.movePiece(c+2*d, r, c, r );
+							playBoard.movePiece(marked_x+2*d, r, marked_x, marked_y);
+							playBoard.movePiece(marked_x+1*d, r, c, r );
 						} else {
 							playBoard.nextPlayer(); ;
-							playBoard.getPiece(c+1*d, r).move();
-							playBoard.getPiece(c+2*d, r).move();
+							playBoard.getPiece(marked_x+2*d, r).move();
+							playBoard.getPiece(marked_x+1*d, r).move();
 							mark=false;
 						}
 					}
