@@ -28,6 +28,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	Image marked;
 	Image markedRed ;
 	Image markedOrange;
+	Image markedGreen;
 
 	// TODO: Implement so that only player can only make moves if board.getPlayerTurn == playerColor
 	// butt if player color is 0 keep the current implementation.
@@ -190,12 +191,13 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			for (Iterator<Integer[]> i = castle.iterator(); i.hasNext(); ){
 				Integer[] pos = i.next();
 				if (pos[0]==0){
+					//TODO REMOVE CALLE
 					g.drawImage(markedOrange, 2*60, pos[1]*60, 60, 60, this);
 				}else if(pos[0]==7){
 					g.drawImage(markedOrange, 6*60, pos[1]*60, 60, 60, this);
 				}
 				
-				g.drawImage(markedOrange, pos[0]*60, pos[1]*60, 60, 60, this);
+				g.drawImage(markedGreen, pos[0]*60, pos[1]*60, 60, 60, this);
 			}
 
 		}
@@ -221,6 +223,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			marked = new ImageIcon("pictures/transpBlue75.png").getImage();
 			markedRed = new ImageIcon("pictures/transpRed75.png").getImage();
 			markedOrange = new ImageIcon("pictures/transpOrange50.png").getImage();
+			markedGreen = new ImageIcon("pictures/transpGreen50.png").getImage();
 		} catch (Exception e){
 			System.err.println("Problem occured loading game pictures.");
 		}
