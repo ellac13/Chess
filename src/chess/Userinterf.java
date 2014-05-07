@@ -9,6 +9,8 @@ import javax.swing.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
 import chess.pieces.Queen;
+import chess.pieces.Rook;
+import chess.pieces.King;
 @SuppressWarnings("serial")
 public class Userinterf extends JPanel implements MouseListener, MouseMotionListener {
 
@@ -51,7 +53,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	public Userinterf(Board board, int playerColor){
 		this.playBoard = board;
 		importPictures();
-		
+
 	}
 
 	@Override 
@@ -66,7 +68,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		if (mark){
 			drawMarked(g);
 		}
-		
+
 
 		if (playBoard.occupied(marked_x,marked_y)==playBoard.GetPlayerTurn()){
 			drawPossible(g);
@@ -74,7 +76,8 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		drawPieces(g);
 		//TODO finish and clean up. Implement new game button.
 		g.drawRoundRect(20, 520, 120, 40, 2, 2);
-		
+
+		// prints necessary info.
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		String[] pt= {"White", "", "Black"} ;
@@ -97,8 +100,8 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		int y = e.getY();
 		int xTemp=x/60;
 		int yTemp=y/60;
-		
-		if (!( xTemp==marked_x && yTemp == marked_y)){
+
+		if (!( xTemp==marked_x && yTemp == marked_y) ){
 			mark=true;
 			if((xTemp<8 && yTemp<8)){
 				clickOnBoard(xTemp, yTemp);
@@ -167,6 +170,15 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			Integer[] pos = i.next();
 			g.drawImage(markedOrange, pos[0]*60, pos[1]*60, 60, 60, this);
 		}
+		if (playBoard.getPiece(marked_x, marked_y).king()){
+			King k= (King) playBoard.getPiece(marked_x, marked_y);
+			HashSet<Integer[]> castle = k.getCastlingMoves();
+			for (Iterator<Integer[]> i = castle.iterator(); i.hasNext(); ){
+				Integer[] pos = i.next();
+				g.drawImage(markedOrange, pos[0]*60, pos[1]*60, 60, 60, this);
+			}
+
+		}
 	}
 
 	/**
@@ -194,9 +206,9 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		}
 	}
 
-	
-	
-	
+
+
+
 	/*
 	 * Handles the actions to perform when clicking on the game board.
 	 * @param c
@@ -204,39 +216,70 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	 */
 	private void clickOnBoard(int c,int r){
 		int playerTurn = playBoard.GetPlayerTurn();
-			if (playBoard.occupied(marked_x, marked_y) == playerTurn){
-				if (playBoard.getPiece(marked_x, marked_y).moveIsAlowed(c, r)){
-					Piece temp = playBoard.movePiece(marked_x, marked_y, c, r);
-					
-					//If player puts him self in mate, retract move.
-					if (playBoard.isMate(playerTurn)){
-						playBoard.movePiece( c, r, marked_x, marked_y);
-						playBoard.putPiece(temp, c, r);
-					} else {
-						//check if pawn has reached last square on board, if so offer pawnPromotion.
-						if (( r==7 || r == 0) && (playBoard.getPiece(c, r) instanceof Pawn)) {
-							swapPiece( c, r );
+		if (playBoard.occupied(marked_x, marked_y) == playerTurn){
+			if (playBoard.getPiece(marked_x, marked_y).moveIsAlowed(c, r)){
+				Piece temp = playBoard.movePiece(marked_x, marked_y, c, r);
+
+				//If player puts him self in mate, retract move.
+				if (playBoard.isMate(playerTurn)){
+					playBoard.movePiece( c, r, marked_x, marked_y);
+					playBoard.putPiece(temp, c, r);
+				} else {
+					//check if pawn has reached last square on board, if so offer pawnPromotion.
+					if (( r==7 || r == 0) && (playBoard.getPiece(c, r) instanceof Pawn)) {
+						swapPiece( c, r );
+					}
+					playBoard.nextPlayer(); ;
+					playBoard.getPiece(c, r).move();
+					mark=false;
+				}
+			}
+
+			// castling
+			if (playBoard.getPiece(marked_x, marked_y).king()  ){
+				King k  = (King) playBoard.getPiece(marked_x, marked_y);
+				if (!k.hasMoved()){
+					if (k.castlingAlowed(c, r)){
+						int d=0;
+						if (c==0){
+							d=1;
+						} else {
+							d=-1;
 						}
-						playBoard.nextPlayer(); ;
-						playBoard.getPiece(c, r).move();
-						mark=false;
+						playBoard.movePiece(marked_x, marked_y, c+1*d, r);
+						playBoard.movePiece(c, r, c+2*d, r);
+
+						if (playBoard.isMate(playerTurn)){
+							playBoard.movePiece(c+1*d, r, marked_x, marked_y);
+							playBoard.movePiece(c+2*d, r, c, r );
+						} else {
+							playBoard.nextPlayer(); ;
+							playBoard.getPiece(c+1*d, r).move();
+							playBoard.getPiece(c+2*d, r).move();
+							mark=false;
+						}
 					}
 				}
 			}
-			marked_x=c;
-			marked_y=r;
-		
+
+
+
+
+		}
+
+		marked_x=c;
+		marked_y=r;
+
 		playerTurn = playBoard.GetPlayerTurn();
 		if (playBoard.isMate(playerTurn)){ 
 			if (playBoard.isCheckMate(playerTurn)){
 				winner= -playerTurn;
-				System.out.println("you won"+  (-playerTurn));
 			}
 		}
 		repaint();
 
 	}
-	
+
 	//TODO: Finish swap method.
 	/**
 	 * Gives the player options of pieces to swap their pawn for.
