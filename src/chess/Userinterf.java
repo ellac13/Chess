@@ -9,7 +9,6 @@ import javax.swing.*;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
 import chess.pieces.Queen;
-import chess.pieces.Rook;
 import chess.pieces.King;
 @SuppressWarnings("serial")
 public class Userinterf extends JPanel implements MouseListener, MouseMotionListener {
@@ -236,7 +235,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			}
 
 			// castling
-			if (playBoard.getPiece(marked_x, marked_y).king()  ){
+			if (playBoard.getPiece(marked_x, marked_y) != null && playBoard.getPiece(marked_x, marked_y).king()  ){
 				King k  = (King) playBoard.getPiece(marked_x, marked_y);
 				if (!k.hasMoved()){
 					if (k.castlingAlowed(c, r)){
