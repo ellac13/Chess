@@ -22,6 +22,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	boolean mark;
 	int marked_x = 2;
 	int marked_y = 2;
+	int winner = 0 ;
 
 	//Pictures used in the graphical representation
 	Image chessPieces;
@@ -73,8 +74,12 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		drawPieces(g);
 		//TODO finish and clean up. Implement new game button.
 		g.drawRoundRect(20, 520, 120, 40, 2, 2);
-		String[] pt= {"White players turn.", "", "Black players turn."} ;
-		g.drawString(pt[1-playBoard.GetPlayerTurn()] , 20 , 510 );
+		String[] pt= {"White", "", "Black"} ;
+		if (winner==0){
+			g.drawString(pt[1-playBoard.GetPlayerTurn()]+" players turn." , 20 , 510 );
+		} else {
+			g.drawString(pt[1-winner]+" has won." , 20 , 510 );
+		}
 
 	}
 	@Override 
@@ -186,32 +191,42 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		}
 	}
 
-	private void clickOnBoard(int x,int y){
+	
+	
+	
+	/*
+	 * Handles the actions to perform when clicking on the game board.
+	 * @param c
+	 * @param r
+	 */
+	private void clickOnBoard(int c,int r){
 		int playerTurn = playBoard.GetPlayerTurn();
 			if (playBoard.occupied(marked_x, marked_y) == playerTurn){
-				if (playBoard.getPiece(marked_x, marked_y).moveIsAlowed(x, y)){
-					Piece temp = playBoard.movePiece(marked_x, marked_y, x, y);
+				if (playBoard.getPiece(marked_x, marked_y).moveIsAlowed(c, r)){
+					Piece temp = playBoard.movePiece(marked_x, marked_y, c, r);
 					
 					//If player puts him self in mate, retract move.
 					if (playBoard.isMate(playerTurn)){
-						playBoard.movePiece( x, y, marked_x, marked_y);
-						playBoard.putPiece(temp, x, y);
+						playBoard.movePiece( c, r, marked_x, marked_y);
+						playBoard.putPiece(temp, c, r);
 					} else {
-						if (( y==7 || y == 0) && (playBoard.getPiece(x, y) instanceof Pawn)) {
-							swapPiece( x, y );
+						//check if pawn has reached last square on board, if so offer pawnPromotion.
+						if (( r==7 || r == 0) && (playBoard.getPiece(c, r) instanceof Pawn)) {
+							swapPiece( c, r );
 						}
 						playBoard.nextPlayer(); ;
-						playBoard.getPiece(x, y).move();
+						playBoard.getPiece(c, r).move();
 						mark=false;
 					}
 				}
 			}
-			marked_x=x;
-			marked_y=y;
+			marked_x=c;
+			marked_y=r;
 		
 		playerTurn = playBoard.GetPlayerTurn();
 		if (playBoard.isMate(playerTurn)){ 
 			if (playBoard.isCheckMate(playerTurn)){
+				winner= -playerTurn;
 				System.out.println("you won"+  (-playerTurn));
 			}
 		}
