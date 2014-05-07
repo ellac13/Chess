@@ -165,6 +165,10 @@ public abstract class Piece implements Cloneable {
 		}
 		return null;
 	}
+	@Override
+	public String toString(){
+		return this.getClass().getSimpleName();
+	}
 
 
 

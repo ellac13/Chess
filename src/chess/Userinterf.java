@@ -317,12 +317,13 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	 */
 	private Piece pieceChooser(int pieceColor) {
 		//Custom button text
-		Object[] options = {"Queen",
-		                    "Bishop",
-		                    "Knight",
-		                    "Rook"};
+		Object[] options = {new Queen(pieceColor),
+				new Bishop(pieceColor),
+				new Knight(pieceColor),
+				new Rook(pieceColor)};
 		//Section below returns an int (0, 1, 2, 3) depending on chosen option.
-		int n = JOptionPane.showOptionDialog(this,
+		int n = 0;
+		n = JOptionPane.showOptionDialog(this,
 		    "Please choose what kind of piece you wish to turn your pawn into",
 		    "A pawn got promoted!",
 		    JOptionPane.YES_NO_CANCEL_OPTION,
@@ -331,21 +332,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		    options,
 		    options[0]);
 		
-		//Creates a piece corresponding to the chosen option.
-		Piece chosenPiece;
-		switch(n){
-			case 0 : chosenPiece = new Queen(pieceColor);
-					break;
-			case 1 : chosenPiece = new Bishop(pieceColor);
-					break;
-			case 2 : chosenPiece = new Knight(pieceColor);
-					break;
-			case 3 : chosenPiece = new Rook(pieceColor);
-					break;
-			default : chosenPiece = null;
-					break;
-		}
-		return chosenPiece;
+		return (Piece) options[n];
 	}
 	
 	//TODO Consider removing as it is not used.
