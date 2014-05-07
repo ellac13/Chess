@@ -140,11 +140,10 @@ public abstract class Piece implements Cloneable {
 				possibleMoves.add(position);
 				Integer[] nexPos= {position[0]+direction[0], position[1]+direction[1]};
 				step(nexPos, direction, board);
-			}else if (!(board.occupied(position[0], position[1])==this.returnColor())){
+			}else if (board.occupied(position[0], position[1])==(-this.returnColor())){
 				possibleMoves.add(position);
 				if  (board.getPiece(position[0], position[1]).king()){
 					threateningKing=true;
-					System.out.println("piece > step : hej");
 				}
 			}
 

@@ -220,7 +220,6 @@ public class Board implements Cloneable {
 				Piece p = board[r][c];
 				if ( p!=null ){
 					if ( p.returnColor()!=color && p.kingThreat()){
-						System.out.println("board : isMate");
 						return true;
 
 					}

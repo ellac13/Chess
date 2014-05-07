@@ -28,8 +28,10 @@ public class King extends Piece{
 			//check that position is in range
 			if (inBounds(checkPosition[0], checkPosition[1])){
 
-				if (board.occupied(checkPosition[0], checkPosition[1])!=this.returnColor()){
-					//TODO:this is where i can implement some sort of in-mate function
+				if (board.occupied(checkPosition[0], checkPosition[1])==(-this.returnColor())){
+					if  (board.getPiece(checkPosition[0], checkPosition[1]).king()){
+						threateningKing=true;
+					}
 					possibleMoves.add(checkPosition);
 				} else if (board.occupied(checkPosition[0], checkPosition[1])==0){
 					//TODO:this is where i can implement some sort of in-mate function

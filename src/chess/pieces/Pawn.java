@@ -37,6 +37,9 @@ public class Pawn extends Piece {
 				if (inBounds(checkPosition[0]+side, checkPosition[1])){
 					if ((board.occupied(checkPosition[0]+side, checkPosition[1])==(-this.returnColor()))){
 						Integer[] temp= {checkPosition[0]+side, checkPosition[1]};
+						if  (board.getPiece(temp[0], temp[1]).king()){
+							threateningKing=true;
+						}
 						possibleMoves.add(temp);
 					}
 				}
