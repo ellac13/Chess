@@ -323,6 +323,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 				new Rook(pieceColor)};
 		//Section below returns an int (0, 1, 2, 3) depending on chosen option.
 		int n = 0;
+		//Note that this returns -1 if you close the dialog without choosing an option.
 		n = JOptionPane.showOptionDialog(this,
 		    "Please choose what kind of piece you wish to turn your pawn into",
 		    "A pawn got promoted!",
@@ -331,6 +332,10 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		    null,
 		    options,
 		    options[0]);
+		
+		if(n < 0 || n > options.length){
+			return (Piece) options[0];
+		}
 		
 		return (Piece) options[n];
 	}
