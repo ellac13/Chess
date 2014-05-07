@@ -20,6 +20,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	boolean mark;
 	int marked_x = 2;
 	int marked_y = 2;
+	int inMate = 0;
 	int winner = 0 ;
 
 	//Pictures used in the graphical representation
@@ -76,12 +77,26 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		// prints necessary info.
 		int rgb = 85;
 		Color semiDarkGray = new Color(rgb, rgb, rgb);
-		g.setColor(semiDarkGray);
+		
 		g.setFont(new Font("Arial", Font.BOLD, 20));
+		
+		String mateString;
+		if (inMate == 1){
+			mateString = "White in check";
+		}else if(inMate == -1){
+			mateString = "Black in check";
+		}else {
+			mateString = "";
+		}
+		g.setColor(Color.RED);
+		g.drawString(mateString, 300, 510);
+		
 		String[] pt= {"White", "", "Black"} ;
+		g.setColor(semiDarkGray);
 		if (winner==0){
 			g.drawString(pt[1-playBoard.GetPlayerTurn()]+" players turn." , 20 , 510 );
 		} else {
+			g.setColor(Color.RED);
 			g.drawString(pt[1-winner]+" has won." , 20 , 510 );
 		}
 
@@ -270,9 +285,12 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 
 		playerTurn = playBoard.GetPlayerTurn();
 		if (playBoard.isMate(playerTurn)){ 
+			inMate = playerTurn;
 			if (playBoard.isCheckMate(playerTurn)){
 				winner= -playerTurn;
 			}
+		}else{
+			inMate = 0;
 		}
 		repaint();
 
