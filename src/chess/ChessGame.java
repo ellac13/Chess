@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class ChessGame {
 	public static void main ( String[] args) {
-		JFrame f = new JFrame("Title of frame here");
+		JFrame f = new JFrame("Chess");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//setUp

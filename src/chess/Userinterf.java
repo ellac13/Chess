@@ -74,6 +74,9 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		drawPieces(g);
 		//TODO finish and clean up. Implement new game button.
 		g.drawRoundRect(20, 520, 120, 40, 2, 2);
+		
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		String[] pt= {"White", "", "Black"} ;
 		if (winner==0){
 			g.drawString(pt[1-playBoard.GetPlayerTurn()]+" players turn." , 20 , 510 );
