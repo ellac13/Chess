@@ -20,8 +20,14 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	boolean mark;
 	int marked_x = 2;
 	int marked_y = 2;
+	int x = 120;
+	int y = 120;
 	int inMate = 0;
 	int winner = 0 ;
+	int buttonPosX = 140 ;
+	int buttonPosY = 520;
+	int buttonSizeX = 180 ;
+	int buttonSizeY = 40;
 
 	//Pictures used in the graphical representation
 	Image chessPieces;
@@ -72,8 +78,15 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			drawPossible(g);
 		}
 		drawPieces(g);
+		
+		
 		//TODO finish and clean up. Implement new game button.
-		g.drawRoundRect(20, 520, 120, 40, 2, 2);
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("Arial", Font.BOLD, 20));
+		g.drawRoundRect(buttonPosX, buttonPosY, buttonSizeX, buttonSizeY, 2, 2);
+		
+		g.drawString("NEW GAME" , buttonPosX+35 , buttonPosY+27 );
+		
 
 		// prints necessary info.
 		int rgb = 85;
@@ -81,6 +94,8 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		
 		g.setFont(new Font("Arial", Font.BOLD, 20));
 		
+		
+		//print a message telling if player is in mate.
 		String mateString;
 		if (inMate == 1){
 			mateString = "White in check";
@@ -92,6 +107,8 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		g.setColor(Color.RED);
 		g.drawString(mateString, 300, 510);
 		
+		
+		//print a message telling whos turn it is.
 		String[] pt= {"White", "", "Black"} ;
 		g.setColor(semiDarkGray);
 	
@@ -109,20 +126,26 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	@Override 
 	public void mousePressed(MouseEvent e){
 	}
+	
+	//TODO: fix temp variables and marked_x marked_y. Currently messy.
 	@Override 
 	public void mouseReleased(MouseEvent e){
-		int x = e.getX();
-		int y = e.getY();
-		int xTemp=x/60;
-		int yTemp=y/60;
+		int xTemp = e.getX();
+		int yTemp = e.getY();
 
-		if (!( xTemp==marked_x && yTemp == marked_y) ){
+		System.out.println("mouseReleased: "+ x+", "+y);
+		if (!( xTemp/60==marked_x && yTemp/60 == marked_y) ){
 			mark=true;
-			if((xTemp<8 && yTemp<8)){
-				clickOnBoard(xTemp, yTemp);
-			}
+			if((xTemp/60<8 && yTemp/60<8)){
+				clickOnBoard(xTemp/60, yTemp/60);
+			} 
 		}
-
+		if (!( xTemp==x && yTemp== y) ){
+				clickOffBoard(xTemp,yTemp);
+				System.out.println("mouseReleased: hej");
+			
+		}
+		
 	}
 	@Override 
 	public void mouseClicked(MouseEvent e){
@@ -227,6 +250,20 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		} catch (Exception e){
 			System.err.println("Problem occured loading game pictures.");
 		}
+	}
+	
+	/*
+	 * Handles the actions to perform when clicking outside the game board.
+	 * @param c
+	 * @param r
+	 */
+	private void clickOffBoard(int x,int y){
+	if (x<buttonPosX+buttonSizeX && x>buttonPosX && y<buttonPosY+buttonSizeY && y> buttonPosY ){
+		newGameDialog();
+	}
+	winner=0;
+	this.x=x;
+	this.y=y;
 	}
 
 
@@ -349,6 +386,26 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		
 		return (Piece) options[n];
 	}
+	
+	/**
+	 * Opens a dialog window which allows the user to chooseif they want to start a new game.
+	 * 
+	 */
+	private void newGameDialog() {
+		
+		String message = " Are you sure you want to start a new game? This will end the current game. ";
+		int n = JOptionPane.showConfirmDialog(this, message, "NEW GAME" , JOptionPane.YES_NO_OPTION);
+		
+		if (n==JOptionPane.YES_OPTION){
+			this.playBoard = new Board();
+			this.playBoard.addPieces();
+			repaint();
+		}
+	}
+	
+	
+	
+	
 	
 	//TODO Consider removing as it is not used.
 	/**
