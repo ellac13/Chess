@@ -41,6 +41,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	private Image markedRed ;
 	private Image markedOrange;
 	private Image markedGreen;
+	private Image markedOrangeGreen;
 
 	// TODO: Implement so that only player can only make moves if board.getPlayerTurn == playerColor
 	// butt if player color is 0 keep the current implementation.
@@ -230,12 +231,12 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 				Integer[] pos = i.next();
 				if (pos[0]==0){
 					//TODO REMOVE CALLE
-					g.drawImage(markedOrange, 2*60, pos[1]*60, 60, 60, this);
+					g.drawImage(markedGreen, 2*60, pos[1]*60, 60, 60, this);
 				}else if(pos[0]==7){
-					g.drawImage(markedOrange, 6*60, pos[1]*60, 60, 60, this);
+					g.drawImage(markedGreen, 6*60, pos[1]*60, 60, 60, this);
 				}
 				
-				g.drawImage(markedGreen, pos[0]*60, pos[1]*60, 60, 60, this);
+				g.drawImage(markedOrangeGreen, pos[0]*60, pos[1]*60, 60, 60, this);
 			}
 
 		}
@@ -253,8 +254,9 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		}
 	}
 
-
-	//imports the pictures needed for the game board and performs error handling.
+	/*
+	 * Imports the pictures needed for the game board and performs error handling.
+	 */
 	private void importPictures(){
 		try{
 			chessPieces = new ImageIcon("pictures/chessPieces.png").getImage();
@@ -262,6 +264,8 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			markedRed = new ImageIcon("pictures/transpRed75.png").getImage();
 			markedOrange = new ImageIcon("pictures/transpOrange50.png").getImage();
 			markedGreen = new ImageIcon("pictures/transpGreen50.png").getImage();
+			markedOrangeGreen = new ImageIcon("pictures/transpOrangeGreen50.png").getImage();
+			//markedOrangeGreen = new ImageIcon("pictures/transpGreenOrange50.png").getImage();
 		} catch (Exception e){
 			System.err.println("Problem occured loading game pictures.");
 		}
@@ -312,7 +316,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 			}
 
 			// castling, checks for availble castling moves if marked  piece is a king that has not moved and that is not in mate.
-			if (playBoard.getPiece(marked_x, marked_y) != null && playBoard.getPiece(marked_x, marked_y).king() && playBoard.isMate(playerTurn)  ){
+			if (playBoard.getPiece(marked_x, marked_y) != null && playBoard.getPiece(marked_x, marked_y).king() && !playBoard.isMate(playerTurn)  ){
 				King k  = (King) playBoard.getPiece(marked_x, marked_y);
 				if (!k.hasMoved()){
 					if (k.castlingAlowed(c, r)){
