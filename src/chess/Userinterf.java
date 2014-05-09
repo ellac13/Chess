@@ -17,28 +17,34 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	Board playBoard;
 
 	//TODO: Remove or implement properly
-	boolean mark;
-	int marked_x = 2;
-	int marked_y = 2;
-	int x = 120;
-	int y = 120;
-	int inMate = 0;
-	int winner = 0 ;
-	int buttonPosX = 140 ;
-	int buttonPosY = 520;
-	int buttonSizeX = 180 ;
-	int buttonSizeY = 40;
+	private boolean mark;
+	private int marked_x = 2;
+	private int marked_y = 2;
+	private int x = 120;
+	private int y = 120;
+	
+	
+	//Two states of the game. 0 indicates that no one is inMate/winner.
+	// 1 is white and -1 is black.
+	private int inMate = 0;
+	private int winner = 0 ;
+	
+	// Gives the coordinates for the new game button.
+	private int buttonPosX = 140 ;
+	private int buttonPosY = 520;
+	private int buttonSizeX = 180 ;
+	private int buttonSizeY = 40;
 
 	//Pictures used in the graphical representation
-	Image chessPieces;
-	Image marked;
-	Image markedRed ;
-	Image markedOrange;
-	Image markedGreen;
+	private Image chessPieces;
+	private Image marked;
+	private Image markedRed ;
+	private Image markedOrange;
+	private Image markedGreen;
 
 	// TODO: Implement so that only player can only make moves if board.getPlayerTurn == playerColor
 	// butt if player color is 0 keep the current implementation.
-	int playerColor;
+	private int playerColor;
 
 
 	/**
@@ -80,7 +86,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		drawPieces(g);
 		
 		
-		//TODO finish and clean up. Implement new game button.
+		//TODO finish and clean up.
 		g.setColor(Color.BLACK);
 		g.setFont(new Font("Arial", Font.BOLD, 20));
 		g.drawRoundRect(buttonPosX, buttonPosY, buttonSizeX, buttonSizeY, 2, 2);
@@ -88,7 +94,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		g.drawString("NEW GAME" , buttonPosX+35 , buttonPosY+27 );
 		
 
-		// prints necessary info.
+		// Set color for texts.
 		int rgb = 85;
 		Color semiDarkGray = new Color(rgb, rgb, rgb);
 		
@@ -97,6 +103,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		
 		//print a message telling if player is in mate.
 		String mateString;
+		
 		if (inMate == 1){
 			mateString = "White in check";
 		}else if(inMate == -1){
@@ -125,15 +132,9 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	}
 	@Override 
 	public void mousePressed(MouseEvent e){
-	}
-	
-	//TODO: fix temp variables and marked_x marked_y. Currently messy.
-	@Override 
-	public void mouseReleased(MouseEvent e){
 		int xTemp = e.getX();
 		int yTemp = e.getY();
-
-		System.out.println("mouseReleased: "+ x+", "+y);
+		
 		if (!( xTemp/60==marked_x && yTemp/60 == marked_y) ){
 			mark=true;
 			if((xTemp/60<8 && yTemp/60<8)){
@@ -142,8 +143,22 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		}
 		if (!( xTemp==x && yTemp== y) ){
 				clickOffBoard(xTemp,yTemp);
-				System.out.println("mouseReleased: hej");
 			
+		}
+		
+	}
+	
+	//TODO: fix temp variables and marked_x marked_y. Currently messy.
+	@Override 
+	public void mouseReleased(MouseEvent e){
+		int xTemp = e.getX();
+		int yTemp = e.getY();
+		
+		if (!( xTemp/60==marked_x && yTemp/60 == marked_y) ){
+			mark=true;
+			if((xTemp/60<8 && yTemp/60<8)){
+				clickOnBoard(xTemp/60, yTemp/60);
+			} 
 		}
 		
 	}
@@ -284,6 +299,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 				if (playBoard.isMate(playerTurn)){
 					playBoard.movePiece( c, r, marked_x, marked_y);
 					playBoard.putPiece(temp, c, r);
+					//TODO: Print message saying that move can not be performed.
 				} else {
 					//check if pawn has reached last square on board, if so offer pawnPromotion.
 					if (( r==7 || r == 0) && (playBoard.getPiece(c, r) instanceof Pawn)) {
@@ -295,8 +311,8 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 				}
 			}
 
-			// castling
-			if (playBoard.getPiece(marked_x, marked_y) != null && playBoard.getPiece(marked_x, marked_y).king()  ){
+			// castling, checks for availble castling moves if marked  piece is a king that has not moved and that is not in mate.
+			if (playBoard.getPiece(marked_x, marked_y) != null && playBoard.getPiece(marked_x, marked_y).king() && playBoard.isMate(playerTurn)  ){
 				King k  = (King) playBoard.getPiece(marked_x, marked_y);
 				if (!k.hasMoved()){
 					if (k.castlingAlowed(c, r)){
@@ -356,7 +372,7 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		playBoard.getPiece(x, y).move();
 	}
 	
-	/**
+	/*
 	 * Opens a dialog window which allows the user to choose a piece which they want returned.
 	 * If no option is chosen, which should never happen, null is returned. 
 	 * @param pieceColor The color of the returned piece, 1 = white, -1 = black.

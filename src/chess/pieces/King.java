@@ -51,7 +51,6 @@ public class King extends Piece{
 				checkPosition[0]=currentC+direction[0];
 				checkPosition[1]=currentR+direction[1];
 				castlingStep(checkPosition, direction, board);
-				castlingStep(checkPosition, direction, board);
 			}
 		}
 

@@ -15,7 +15,6 @@ public class Board implements Cloneable {
 
 	private final int NUM_TILES = 8;
 	private Piece[][] board;
-	private int inMate = 0;
 	private HashSet<Piece> taken;
 	private int playerTurn;
 
@@ -88,7 +87,7 @@ public class Board implements Cloneable {
 			board[6][i] = new Pawn(1);
 		}
 
-		inMate = updatePossible();
+		updatePossible();
 	}
 
 
@@ -122,7 +121,7 @@ public class Board implements Cloneable {
 		Piece p = board[r][c];
 		board[r][c]=null;
 		taken.add(p);
-		inMate = updatePossible();
+		updatePossible();
 		return p;
 	}
 
@@ -142,7 +141,7 @@ public class Board implements Cloneable {
 		//TODO Check bounds
 		if(board[r][c] == null){
 			board[r][c] = piece;
-			inMate = updatePossible();
+			updatePossible();
 			return 0;
 		}
 		return -1;
@@ -167,7 +166,7 @@ public class Board implements Cloneable {
 			}
 			board[toR][toC] = board[r][c] ;
 			board[r][c]=null;
-			inMate = updatePossible();
+			updatePossible();
 			return temp;
 		}
 		return null;
@@ -195,7 +194,7 @@ public class Board implements Cloneable {
 	 * @return 
 	 * 
 	 */
-	public int updatePossible(){
+	public void updatePossible(){
 		for ( int r = 0; r<8; r++){
 			for ( int c = 0; c<8; c++){
 				Piece p = board[r][c];
@@ -205,7 +204,6 @@ public class Board implements Cloneable {
 				}
 			}
 		}
-		return 0;
 	}
 
 	/**
