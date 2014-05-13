@@ -427,24 +427,6 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 	
 	
 	
-	//TODO Consider removing as it is not used.
-	/**
-	 * Creates a pop-up containing the four pieces allowed to chose from when promoting a pawn.
-	 * @param pieceColor Color of the pieces to be displayed, 1 = white, -1 = black.
-	 */
-	private void openChooserWindow(int pieceColor){
-		JFrame f = new JFrame("Choose a piece");
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		PieceChooser pc = new PieceChooser(pieceColor);
-		f.add(pc);
-		// 246x88 window
-		f.setSize ( 246 ,88);
-		f.setResizable(false);
-		Image icon = new ImageIcon("pictures/king_black.png").getImage();
-		f.setIconImage(icon);
-		f.setVisible(true);
-	}
 }
 
 
