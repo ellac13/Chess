@@ -354,8 +354,16 @@ public class Userinterf extends JPanel implements MouseListener, MouseMotionList
 		if (playBoard.isMate(playerTurn)){ 
 			inMate = playerTurn;
 			if (playBoard.isCheckMate(playerTurn)){
-				winner= -playerTurn;
-			}
+				String[] pt= {"White", "", "Black"} ;
+				
+				JOptionPane.showMessageDialog(this, ""+pt[1+playerTurn]+" has won", "Winner" , JOptionPane.INFORMATION_MESSAGE);
+				
+					this.playBoard = new Board();
+					this.playBoard.addPieces();
+					winner=0;
+					inMate=0;
+					repaint();
+				}
 		}else{
 			inMate = 0;
 		}
